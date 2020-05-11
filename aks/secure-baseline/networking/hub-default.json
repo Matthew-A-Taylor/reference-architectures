@@ -19,42 +19,6 @@
             "metadata": {
                 "description": "The hub's regional affinity. All resources tied to this hub will also be homed in this region.  The network team maintains this approved regional list which is a subset of zones with Availability Zone support."
             }
-        },
-        "hubVnetAddressSpace": {
-            "defaultValue": "10.200.0.0/24",
-            "type": "string",
-            "maxLength": 18,
-            "minLength": 10,
-            "metadata": {
-                "description": "A /24 to contain the firewall, management, and gateway subnet"
-            }
-        },
-        "azureFirewallSubnetAddressSpace": {
-            "defaultValue": "10.200.0.0/26",
-            "type": "string",
-            "maxLength": 18,
-            "minLength": 10,
-            "metadata": {
-                "description": "A /26 under the VNet Address Space for Azure Firewall"
-            }
-        },
-        "azureGatewaySubnetAddressSpace": {
-            "defaultValue": "10.200.0.64/27",
-            "type": "string",
-            "maxLength": 18,
-            "minLength": 10,
-            "metadata": {
-                "description": "A /27 under the VNet Address Space for our On-Prem Gateway"
-            }
-        },
-        "azureBastionSubnetAddressSpace": {
-            "defaultValue": "10.200.0.96/27",
-            "type": "string",
-            "maxLength": 18,
-            "minLength": 10,
-            "metadata": {
-                "description": "A /27 under the VNet Address Space for Azure Bastion"
-            }
         }
     },
     "variables": {
@@ -72,14 +36,14 @@
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
-                        "[parameters('hubVnetAddressSpace')]"
+                        "10.200.0.0/24"
                     ]
                 },
                 "subnets": [
                     {
                         "name": "AzureFirewallSubnet",
                         "properties": {
-                            "addressPrefix": "[parameters('azureFirewallSubnetAddressSpace')]",
+                            "addressPrefix": "10.200.0.0/26",
                             "serviceEndpoints": [
                                 {
                                     "service": "Microsoft.ContainerRegistry"
@@ -93,7 +57,7 @@
                     {
                         "name": "GatewaySubnet",
                         "properties": {
-                            "addressPrefix": "[parameters('azureGatewaySubnetAddressSpace')]",
+                            "addressPrefix": "10.200.0.64/27",
                             "serviceEndpoints": [
                             ]
                         }
@@ -101,7 +65,7 @@
                     {
                         "name": "AzureBastionSubnet",
                         "properties": {
-                            "addressPrefix": "[parameters('azureBastionSubnetAddressSpace')]",
+                            "addressPrefix": "10.200.0.96/27",
                             "serviceEndpoints": [
                             ]
                         }
