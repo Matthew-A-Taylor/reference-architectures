@@ -5,7 +5,7 @@
         "targetVnetResourceId": {
             "type": "string",
             "metadata": {
-                "description": "Vnet resource Id where the cluster is going to be deployed"
+                "description": "The regional network spoke VNet Resource ID that the cluster will be joined to"
             }
         },
         "keyvaultAclAllowedSubnetResourceIds": {
@@ -83,7 +83,7 @@
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
-            "name": "[concat( 'kv-', variables('clusterName')) ]",
+            "name": "[concat( 'kv20-', variables('clusterName')) ]",
             "apiVersion": "2019-09-01",
             "location": "[parameters('location')]",
             "properties": {
