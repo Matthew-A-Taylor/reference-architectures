@@ -83,7 +83,7 @@
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults",
-            "name": "[concat( 'kv20-', variables('clusterName')) ]",
+            "name": "[concat( 'kv-', variables('clusterName')) ]",
             "apiVersion": "2019-09-01",
             "location": "[parameters('location')]",
             "properties": {
