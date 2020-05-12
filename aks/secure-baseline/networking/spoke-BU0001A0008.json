@@ -3,7 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "hubVnetResourceId": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The hub networking which it is going to be peering"
+            }
         },
         "location": {
             "type": "string",

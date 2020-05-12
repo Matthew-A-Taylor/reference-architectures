@@ -3,12 +3,15 @@
     "contentVersion": "0.0.0.3",
     "parameters": {
         "targetVnetResourceId": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "Vnet resource Id where the cluster is going to be deployed"
+            }
         },
         "keyvaultAclAllowedSubnetResourceIds": {
             "type": "array",
             "metadata": {
-                "description": "the subnets to give access to the key vault."
+                "description": "the subnets to give access to the key vault"
             }
         },
         "k8sRbacAadProfileServerAppId": {
@@ -32,7 +35,7 @@
         "k8sRbacAadProfileTenantId": {
             "type": "string",
             "metadata": {
-                "description": "This is tennant where the ServerAppId, ServerAppSecret, ClientAppId all reside."
+                "description": "This is tennant where the ServerAppId, ServerAppSecret, ClientAppId all reside"
             }
         },
         "location": {
@@ -72,11 +75,10 @@
         "defaultAcrName": "[concat('acraks', variables('subRgUniqueString'))]",
 
         "vNetResourceGroup": "[split(parameters('targetVnetResourceId'),'/')[4]]",
-        "vNetName": "[split(parameters('targetVnetResourceId'),'/')[8]]",
-
         "vnetNodePoolSubnetResourceId": "[concat(parameters('targetVnetResourceId'), '/subnets/snet-clusternodes')]",
 
-        "apwResourceId": "[resourceId('Microsoft.Network/applicationGateways', concat( 'apw-', variables('clusterName')))]"
+        "agwName": "[concat( 'apw-', variables('clusterName')) ]",
+        "apwResourceId": "[resourceId('Microsoft.Network/applicationGateways', variables('agwName'))]"
     },
     "resources": [
         {
@@ -110,7 +112,7 @@
         {
             "type": "Microsoft.Network/applicationGateways",
             "apiVersion": "2019-11-01",
-            "name": "[concat( 'apw-', variables('clusterName')) ]",
+            "name": "[variables('agwName')]",
             "location": "[parameters('location')]",
             "zones": [
                 "1",
@@ -238,7 +240,7 @@
                         {
                             "type": "Microsoft.Network/virtualNetworks/providers/roleAssignments",
                             "apiVersion": "2018-09-01-preview",
-                            "name": "[concat(variables('vNetName'), '/Microsoft.Authorization/', guid(concat(resourceGroup().id), variables('networkContributorRole')))]",
+                            "name": "[concat(split(parameters('targetVnetResourceId'),'/')[8], '/Microsoft.Authorization/', guid(concat(resourceGroup().id), variables('networkContributorRole')))]",
                             "properties": {
                                 "roleDefinitionId": "[variables('networkContributorRole')]",
                                 "principalId": "[reference(resourceId('Microsoft.ContainerService/managedClusters', variables('clusterName')), '2020-03-01').identityProfile.kubeletidentity.objectId]"
